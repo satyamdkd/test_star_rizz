@@ -39,13 +39,29 @@ void main() async {
   /// +++++++++++++++++++++++++++++ FOR BLOC +++++++++++++++++++++++++++++++++++
   /// ==========================================================================
 
+  /// MAP
+  // runApp(
+  //   const GetMaterialApp(
+  //     debugShowCheckedModeBanner: false,
+  //     home: MyMapView(),
+  //   ),
+  // );
+
+  /// BLOC With Bloc Provider
+  // runApp(
+  //   GetMaterialApp(
+  //     debugShowCheckedModeBanner: false,
+  //     home: BlocProvider(
+  //       create: (context) => HomeBloc(),
+  //       child: const HomeView(),
+  //     ),
+  //   ),
+  // );
+
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (context) => HomeBloc(),
-        child: const HomeView(),
-      ),
+      home: const HomeView(),
     ),
   );
 
