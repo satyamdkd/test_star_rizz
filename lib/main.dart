@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:demo_firebase/const/constants.dart';
 import 'package:demo_firebase/services/notifications/firebase_options.dart';
 import 'package:demo_firebase/services/notifications/notification_service.dart';
 import 'package:demo_firebase/ui/bloc/splash/ui/splash.dart';
 import 'package:demo_firebase/ui/bloc_exam/home/bloc/home_bloc.dart';
 import 'package:demo_firebase/ui/bloc_exam/home/ui/home_view.dart';
+import 'package:demo_firebase/ui/bloc_exam/home/ui/qr_code.dart';
 import 'package:demo_firebase/ui/home/home.dart';
 import 'package:demo_firebase/ui/google_translate/test.dart';
 import 'package:demo_firebase/ui/location_picker/location_picker.dart';
@@ -13,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:translator/translator.dart';
 
 void main() async {
@@ -48,24 +52,70 @@ void main() async {
   // );
 
   /// BLOC With Bloc Provider
-  // runApp(
-  //   GetMaterialApp(
-  //     debugShowCheckedModeBanner: false,
-  //     home: BlocProvider(
-  //       create: (context) => HomeBloc(),
-  //       child: const HomeView(),
-  //     ),
-  //   ),
-  // );
 
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomeView(),
+      home: BlocProvider(
+        create: (context) => HomeBloc(),
+        child: const HomeView(),
+      ),
     ),
   );
 
+  // runApp(
+  //   const GetMaterialApp(
+  //     debugShowCheckedModeBanner: false,
+  //     home: Home(),
+  //   ),
+  // );
+
   /// ++++++++++++++++++++++++++++++++ END +++++++++++++++++++++++++++++++++++++
+}
+
+class APPMY extends StatefulWidget {
+  const APPMY({super.key});
+
+  @override
+  State<APPMY> createState() => _APPMYState();
+}
+
+class _APPMYState extends State<APPMY> with WidgetsBindingObserver {
+  StreamSubscription<Object?>? _subscription;
+  final MobileScannerController controller = MobileScannerController(
+      // required options for the scanner
+      );
+
+  @override
+  void initState() {
+    super.initState();
+    // Start listening to lifecycle changes.
+    WidgetsBinding.instance.addObserver(this);
+
+    // Start listening to the barcode events.
+    _subscription = controller.barcodes.listen((v) {
+      print(v.toString());
+    });
+
+    // Finally, start the scanner itself.
+    unawaited(controller.start());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.sizeOf(context).height,
+        width: MediaQuery.sizeOf(context).width,
+        child: MobileScanner(
+          onDetect: (capture) {
+            final List<Barcode> barcodes = capture.barcodes;
+            for (final barcode in barcodes) {}
+          },
+        ),
+      ),
+    );
+  }
 }
 
 /// +++++++++++++++++++++++++++ FOR FIREBASE +++++++++++++++++++++++++++++++++++

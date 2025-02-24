@@ -15,6 +15,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+
     /// final homeBloc = BlocProvider.of<HomeBloc>(context);
 
     return Scaffold(
@@ -40,6 +41,7 @@ class _HomeViewState extends State<HomeView> {
       ///                 : Container();
       ///   },
       /// ),
+
       body: BlocConsumer<HomeBloc, HomeState>(
         bloc: homeBloc,
         listener: listener,
